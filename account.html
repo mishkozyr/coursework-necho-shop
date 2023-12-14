@@ -62,7 +62,7 @@
                                     </div>
 
                                     <div class="mt-4">
-                                        <button class="hover:underline hover:text-[#F8F276]">Перейти на страницу с товаром()</button>
+                                        <a href="product.html" class="hover:underline hover:text-[#F8F276]">Перейти на страницу с товаром()</a>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div class="mt-4">
-                                        <button class="hover:underline hover:text-[#F8F276]">Перейти на страницу с товаром()</button>
+                                        <a href="product.html" class="hover:underline hover:text-[#F8F276]">Перейти на страницу с товаром()</a>
                                     </div>
                                 </div>
                             </div>
@@ -132,6 +132,81 @@
     </header>
 
     <main class="flex-grow">
+        <div class="container mx-auto">
+            <section class="flex justify-between">
+                <div class="w-80 flex-none">
+                    <div x-data="{ isInputFocused: false }" class="relative">
+                        <input
+                            x-model="inputValue"
+                            x-on:focus="isInputFocused = true"
+                            x-on:blur="isInputFocused = false"
+                            type="text"
+                            id="name1Input"
+                            class="pt-5 pb-2 rounded-md w-full placeholder-gray-500 text-gray-800 px-4 focus:outline-none"
+                        >
+                        <label
+                            for="name1Input"
+                            x-bind:class="{ 'top-1': isInputFocused || inputValue, 'top-4': !isInputFocused && !inputValue }"
+                            class="absolute top-4 left-4 transition-all duration-300 origin-0 text-gray-400 text-sm"
+                        >имя</label>
+                    </div>
+                    <div x-data="{ isInputFocused: false }" class="relative mt-4">
+                        <input
+                            x-model="inputValue"
+                            x-on:focus="isInputFocused = true"
+                            x-on:blur="isInputFocused = false"
+                            type="text"
+                            id="name2Input"
+                            class="pt-5 pb-2 rounded-md w-full placeholder-gray-500 text-gray-800 px-4 focus:outline-none"
+                        >
+                        <label
+                            for="name2Input"
+                            x-bind:class="{ 'top-1': isInputFocused || inputValue, 'top-4': !isInputFocused && !inputValue }"
+                            class="absolute top-4 left-4 transition-all duration-300 origin-0 text-gray-400 text-sm"
+                        >фамилия</label>
+                    </div>
+                    <div x-data="{ isInputFocused: false }" class="relative mt-4">
+                        <input
+                            x-model="inputValue"
+                            x-on:focus="isInputFocused = true"
+                            x-on:blur="isInputFocused = false"
+                            type="text"
+                            id="emailInput"
+                            class="pt-5 pb-2 rounded-md w-full placeholder-gray-500 text-gray-800 px-4 focus:outline-none"
+                        >
+                        <label
+                            for="emailInput"
+                            x-bind:class="{ 'top-1': isInputFocused || inputValue, 'top-4': !isInputFocused && !inputValue }"
+                            class="absolute top-4 left-4 transition-all duration-300 origin-0 text-gray-400 text-sm"
+                        >email</label>
+                    </div>
+        
+                    <div class="mt-4 flex justify-end">
+                        изменить пароль()
+                    </div>
+        
+                    <div class="mt-8">
+                        Ваша скидка: 5%
+                    </div>
+                </div>
+        
+                <div class="max-w-2xl">
+                    <div class="">
+                        <div>Привязка GitHub:</div>
+                        <div class="mt-4">
+                            <a href="" class="text-center py-3 px-10 rounded-md uppercase bg-[#2fa847] hover:bg-[#238636] transition-colors hover:underline">
+                                Войти через GitHub()
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <div>let Text = </div>
+                        <p class="ml-20 mt-2 text-justify">`Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique quidem eligendi odio accusantium ut error, vel placeat molestiae harum nisi repellat cum autem minima voluptatibus nam labore impedit obcaecati cupiditate.`</p>
+                    </div>
+                    
+                </div>
+            </section>
+        </div>
         
     </main>
 
