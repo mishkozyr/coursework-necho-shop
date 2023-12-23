@@ -1,0 +1,11 @@
+.scrollable-container {
+    /* overflow-x: auto; разрешаем горизонтальную прокрутку внутри контейнера */
+    white-space: nowrap; /* запрещаем перенос текста */
+    scrollbar-width: thin; /* скрываем полосу прокрутки на Firefox */
+}
+.scrollable-container::-webkit-scrollbar {
+    width: 0.2rem; /* ширина полосы прокрутки на WebKit (Chrome, Safari) */
+}
+.scrollable-container::-webkit-scrollbar-thumb {
+    background-color: transparent; /* цвет полосы прокрутки */
+}

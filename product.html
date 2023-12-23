@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="bg-black">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,20 +30,42 @@
           }
         }
     </style> -->
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('burger', () => ({
+                burger: false,
+            
+                toggle() {
+                    this.burger = !this.burger;
+                    if (this.burger) {
+                        document.documentElement.classList.add('overflow-hidden');
+                    } else {
+                        document.documentElement.classList.remove('overflow-hidden');
+                    }
+                },
+
+                close() {
+                    this.burger = false;
+                    document.documentElement.classList.remove('overflow-hidden');
+                }
+            }))
+        })
+    </script>
 </head>
 <body class="font-fira font-thin text-white flex flex-col h-full min-h-screen relative bg-no-repeat bg-gradient-to-b from-red-500 via-black to-red-500">
-    <div class="bg-black w-full h-10 flex items-center">
-        <div class="container mx-auto text-sm underline-offset-[3px] flex justify-between">
+    <div class="bg-black w-full h-14 lg:h-10 flex items-center">
+        <div class="px-8 lg:px-0 container mx-auto text-sm underline-offset-[3px] flex justify-between">
             <div>
                 <a class="hover:underline hover:text-[#F8F276]" href="login.html">Войти()</a>/<a class="hover:underline hover:text-[#F8F276]" href="register.html">Зарегистрироваться()</a>
             </div>
 
             <div x-data="{ cart: false }">
-                <button class="hover:underline hover:text-[#F8F276]" @click="cart = true">Перейти в корзину()</button>
+                <button class="hover:underline hover:text-[#F8F276] text-right lg:text-left" @click="cart = true">Перейти в корзину()</button>
 
-                <div x-show="cart" @click.outside="cart = false" class="fixed top-0 right-0 w-[35%] h-screen bg-black">
+                <div x-show="cart" @click.outside="cart = false" class="fixed top-0 right-0 w-screen xl:w-[35%] h-screen bg-black z-50">
                     <div class="mx-10 my-10">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-end justify-between">
                             <h2 class="text-xl">Корзина</h2>
                             <button class="hover:underline hover:text-[#F8F276]" @click="cart = false">
                                 Закрыть корзину()
@@ -51,12 +73,12 @@
                         </div>
 
                         <div class="mt-10">
-                            <div class="flex items-start justify-between gap-5">
+                            <div class="w-fit flex items-start justify-between gap-5">
                                 <div class="flex-none">
-                                    <img src="assets/img/t-shirt.png" alt="" class="w-32 h-32">
+                                    <img src="assets/img/t-shirt.png" alt="" class="h-24 lg:w-32 h-24 lg:h-32">
                                 </div>
-                                <div class="w-full h-32 flex flex-col">
-                                    <div class="flex items-start justify-between">
+                                <div class="w-full h-20 lg:h-32 flex flex-col">
+                                    <div class="flex flex-col lg:flex-row items-start justify-between">
                                         <h3>Футболка</h3>
                                         <div>2 500 руб. x 2</div>
                                     </div>
@@ -67,14 +89,14 @@
                                 </div>
                             </div>
 
-                            <div class="mt-4 flex items-start justify-between gap-5">
+                            <div class="mt-6 w-fit flex items-start justify-between gap-5">
                                 <div class="flex-none">
-                                    <img src="assets/img/t-shirt.png" alt="" class="w-32 h-32">
+                                    <img src="assets/img/t-shirt.png" alt="" class="h-24 lg:w-32 h-24 lg:h-32">
                                 </div>
-                                <div class="w-full h-32 flex flex-col">
-                                    <div class="flex items-start justify-between">
+                                <div class="w-full h-20 lg:h-32 flex flex-col">
+                                    <div class="flex flex-col lg:flex-row items-start justify-between">
                                         <h3>Футболка</h3>
-                                        <div>2 500 руб. x 1</div>
+                                        <div>2 500 руб. x 2</div>
                                     </div>
 
                                     <div class="mt-4">
@@ -95,10 +117,45 @@
     </div>
 
     <header>
-        <div class="flex items-center justify-end container mx-auto pt-6 pb-16">
-            <div class="w-full flex flex-col items-end">
+        <div class="flex items-center justify-end px-8 lg:px-0 container mx-auto pt-6 pb-10 lg:pb-16">
+            <div class="w-full flex justify-between items-center lg:flex-col lg:items-end">
+                <!--  -->
+                <div x-data="burger" class="mb-1 lg:hidden px-2 transition duration-300 items-center justify-center">
+                    <button @click="toggle()" class="h-[30px] flex items-center focus:outline-none text-2xl text-gray-200">
+                        <div class="w-8 flex items-center justify-center relative">
+                            <div 
+                                :class="{ 'translate-y-0 rotate-45' : burger, '-translate-y-2': ! burger }"
+                                class="transform transition w-8 h-[5px] bg-current absolute"
+                            ></div>
+
+                            <div :class="{ 'opacity-0 translate-x-3': burger, 'opacity-100' : !burger }"
+                                class="transform transition mt-1 w-8 h-[5px] bg-current absolute"
+                            ></div>
+
+                            <div :class="{ 'mt-0 translate-y-0 -rotate-45': burger, 'translate-y-2' : !burger }"
+                                class="transform transition mt-2 w-8 h-[5px] bg-current absolute"
+                            ></div>
+                        </div>
+                    </button>
+
+                    <!-- Выезжающее меню -->
+                    <div x-show="burger" @click.away="close()" class="fixed top-0 left-0 w-full h-screen py-8 px-8 z-[100] bg-black flex flex-col items-start">
+                        <div class="flex w-full items-center justify-end">
+                            <button @click="close() " class="hover:underline hover:text-[#F8F276]">Закрыть меню()</button>
+                        </div>
+                        <ul class="mt-6 flex flex-col gap-5 text-2xl">
+                            <li><a @click="close()" href="index.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Главная</a></li>
+                            <li><a @click="close()" href="catalog.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Каталог</a></li>
+                            <li><a @click="close()" href="account.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Личный кабинет</a></li>
+                            <li><a @click="close()" href="delivery.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Доставка и оплата</a></li>
+                            <li><a @click="close()" href="faq.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--  -->
+                
                 <div class="text-5xl font-semibold">NECHO()</div>
-                <div class="mt-5 text-lg">
+                <div class="hidden lg:block mt-5 text-lg">
                     <ul class="flex flex-row underline-offset-[3px]">
                         <li>
                         [<a class="hover:underline decoration-1" 
@@ -109,7 +166,7 @@
                         <a class="hover:underline decoration-1" 
                             href="catalog.html"
                         >"Каталог"</a>,&nbsp;
-                        </li>
+                       </li>
                         <li>
                         <a class="hover:underline decoration-1" 
                             href="account.html"
@@ -132,49 +189,41 @@
     </header>
 
     <main class="flex-grow">
-        <div class="container mx-auto">
+        <div class="px-8 lg:px-0 container mx-auto">
             <section class="pb-20">
-                <div class="flex items-start gap-16">
+                <div class="flex flex-col lg:flex-row items-center lg:items-start gap-16">
                     <div class="w-80 h-80 flex-none">
-                        <img src="assets/img/t-shirt.png" alt="" class="w-full h-full">    
+                        <img src="assets/img/gif/t-shirt.gif" alt="" class="w-full h-full">    
                     </div>
-                
-                    
             
                     <div class="flex-grow float-left">
-                        <div class="w-full flex items-center justify-between">
-                            <div>2 500 руб.</div>
-                            <div>
-                                <a href="" class="pt-4 hover:underline hover:text-[#F8F276]">
+                        <div class="lg:w-full flex justify-between">
+                            <h1>Футболка</h1>
+                            <div class="flex flex-col">
+                                <div>2 500 руб.</div>
+                                <a href="" class="hover:underline hover:text-[#F8F276]">
                                     купить()
                                 </a>
                             </div>
                         </div>
-            
-                        <div class="mt-10">
-                            let 1111 =
-                        </div>
-                        <div class="ml-20">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
-                            </p>
-                            <p class="mt-4">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
-                            </p>
+                        
+                        <div class="">
+                            <div class="mt-10">
+                                let 1111 =
+                            </div>
+                            <div class="ml-6 lg:ml-20">
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
+                                </p>
+                                <p class="mt-4">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
+                                </p>
+                                <p class="mt-4">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-        
-                <div class="mt-8">
-                    <p class="">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
-                    </p>
-                    <p class="mt-4">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
-                    </p>
-                    <p class="mt-4">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis consequatur eos alias commodi magnam dignissimos cumque obcaecati ullam neque adipisci? Harum qui quidem accusamus ex voluptates nisi quod. Exercitationem, ad!
-                    </p>
                 </div>
             </section>
         </div>

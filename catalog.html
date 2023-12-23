@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NECHO() - интернет-магазин одежды</title>
 
+    <link rel="stylesheet" href="assets/app.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -31,22 +33,44 @@
         }
     </style> -->
 
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('burger', () => ({
+                burger: false,
+            
+                toggle() {
+                    this.burger = !this.burger;
+                    if (this.burger) {
+                        document.documentElement.classList.add('overflow-hidden');
+                    } else {
+                        document.documentElement.classList.remove('overflow-hidden');
+                    }
+                },
+
+                close() {
+                    this.burger = false;
+                    document.documentElement.classList.remove('overflow-hidden');
+                }
+            }))
+        })
+    </script>
+
     <link rel="stylesheet" href="assets/nouislider.css" />
     <script src="assets/nouislider.js"></script>
 </head>
 <body class="font-fira font-thin text-white flex flex-col h-full min-h-screen relative bg-no-repeat bg-gradient-to-b from-red-500 via-black to-red-500">
-    <div class="bg-black w-full h-10 flex items-center">
-        <div class="container mx-auto text-sm underline-offset-[3px] flex justify-between">
+    <div class="bg-black w-full h-14 lg:h-10 flex items-center">
+        <div class="px-8 lg:px-0 container mx-auto text-sm underline-offset-[3px] flex justify-between">
             <div>
                 <a class="hover:underline hover:text-[#F8F276]" href="login.html">Войти()</a>/<a class="hover:underline hover:text-[#F8F276]" href="register.html">Зарегистрироваться()</a>
             </div>
 
             <div x-data="{ cart: false }">
-                <button class="hover:underline hover:text-[#F8F276]" @click="cart = true">Перейти в корзину()</button>
+                <button class="hover:underline hover:text-[#F8F276] text-right lg:text-left" @click="cart = true">Перейти в корзину()</button>
 
-                <div x-show="cart" @click.outside="cart = false" class="fixed top-0 right-0 w-[35%] h-screen bg-black z-50">
+                <div x-show="cart" @click.outside="cart = false" class="fixed top-0 right-0 w-screen xl:w-[35%] h-screen bg-black z-50">
                     <div class="mx-10 my-10">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-end justify-between">
                             <h2 class="text-xl">Корзина</h2>
                             <button class="hover:underline hover:text-[#F8F276]" @click="cart = false">
                                 Закрыть корзину()
@@ -54,12 +78,12 @@
                         </div>
 
                         <div class="mt-10">
-                            <div class="flex items-start justify-between gap-5">
+                            <div class="w-fit flex items-start justify-between gap-5">
                                 <div class="flex-none">
-                                    <img src="assets/img/t-shirt.png" alt="" class="w-32 h-32">
+                                    <img src="assets/img/gif/t-shirt.gif" alt="" class="h-24 lg:w-32 h-24 lg:h-32">
                                 </div>
-                                <div class="w-full h-32 flex flex-col">
-                                    <div class="flex items-start justify-between">
+                                <div class="w-full h-20 lg:h-32 flex flex-col">
+                                    <div class="flex flex-col lg:flex-row items-start justify-between">
                                         <h3>Футболка</h3>
                                         <div>2 500 руб. x 2</div>
                                     </div>
@@ -70,14 +94,14 @@
                                 </div>
                             </div>
 
-                            <div class="mt-4 flex items-start justify-between gap-5">
+                            <div class="mt-6 w-fit flex items-start justify-between gap-5">
                                 <div class="flex-none">
-                                    <img src="assets/img/t-shirt.png" alt="" class="w-32 h-32">
+                                    <img src="assets/img/gif/t-shirt.gif" alt="" class="h-24 lg:w-32 h-24 lg:h-32">
                                 </div>
-                                <div class="w-full h-32 flex flex-col">
-                                    <div class="flex items-start justify-between">
+                                <div class="w-full h-20 lg:h-32 flex flex-col">
+                                    <div class="flex flex-col lg:flex-row items-start justify-between">
                                         <h3>Футболка</h3>
-                                        <div>2 500 руб. x 1</div>
+                                        <div>2 500 руб. x 2</div>
                                     </div>
 
                                     <div class="mt-4">
@@ -98,10 +122,45 @@
     </div>
 
     <header>
-        <div class="flex items-center justify-end container mx-auto pt-6 pb-16">
-            <div class="w-full flex flex-col items-end">
+        <div class="flex items-center justify-end px-8 lg:px-0 container mx-auto pt-6 pb-10 lg:pb-16">
+            <div class="w-full flex justify-between items-center lg:flex-col lg:items-end">
+                <!--  -->
+                <div x-data="burger" class="mb-1 lg:hidden px-2 transition duration-300 items-center justify-center">
+                    <button @click="toggle()" class="h-[30px] flex items-center focus:outline-none text-2xl text-gray-200">
+                        <div class="w-8 flex items-center justify-center relative">
+                            <div 
+                                :class="{ 'translate-y-0 rotate-45' : burger, '-translate-y-2': ! burger }"
+                                class="transform transition w-8 h-[5px] bg-current absolute"
+                            ></div>
+
+                            <div :class="{ 'opacity-0 translate-x-3': burger, 'opacity-100' : !burger }"
+                                class="transform transition mt-1 w-8 h-[5px] bg-current absolute"
+                            ></div>
+
+                            <div :class="{ 'mt-0 translate-y-0 -rotate-45': burger, 'translate-y-2' : !burger }"
+                                class="transform transition mt-2 w-8 h-[5px] bg-current absolute"
+                            ></div>
+                        </div>
+                    </button>
+
+                    <!-- Выезжающее меню -->
+                    <div x-show="burger" @click.away="close()" class="fixed top-0 left-0 w-full h-screen py-8 px-8 z-[100] bg-black flex flex-col items-start">
+                        <div class="flex w-full items-center justify-end">
+                            <button @click="close() " class="hover:underline hover:text-[#F8F276]">Закрыть меню()</button>
+                        </div>
+                        <ul class="mt-6 flex flex-col gap-5 text-2xl">
+                            <li><a @click="close()" href="index.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Главная</a></li>
+                            <li><a @click="close()" href="catalog.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Каталог</a></li>
+                            <li><a @click="close()" href="account.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Личный кабинет</a></li>
+                            <li><a @click="close()" href="delivery.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">Доставка и оплата</a></li>
+                            <li><a @click="close()" href="faq.html" class="block text-gray-200 uppercase hover:underline hover:text-[#F8F276]">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--  -->
+                
                 <div class="text-5xl font-semibold">NECHO()</div>
-                <div class="mt-5 text-lg">
+                <div class="hidden lg:block mt-5 text-lg">
                     <ul class="flex flex-row underline-offset-[3px]">
                         <li>
                         [<a class="hover:underline decoration-1" 
@@ -112,7 +171,7 @@
                         <a class="hover:underline decoration-1" 
                             href="catalog.html"
                         >"Каталог"</a>,&nbsp;
-                        </li>
+                       </li>
                         <li>
                         <a class="hover:underline decoration-1" 
                             href="account.html"
@@ -135,13 +194,13 @@
     </header>
 
     <main class="flex-grow">
-        <div class="container mx-auto">
+        <div class="px-8 lg:px-0 container mx-auto">
             <section class="pb-20">
                 <h1 class="text-center text-xl">Каталог</h1>
         
-                <div class="w-full flex flex-col my-8" x-data="{ showFilters: false }">
+                <div class="w-full flex justify-end lg:flex-col mt-3 mb-5 lg:mb-0 lg:my-8" x-data="{ showFilters: false }">
                     <div class="flex justify-between items-center">
-                        <div class="flex gap-7">
+                        <div class="hidden lg:flex gap-7">
                             Сортировать по: 
                             <ul class="flex gap-5">
                                 <li class="hover:underline">
@@ -166,27 +225,39 @@
                     </div>
                     
                     <div x-show="showFilters" @click.outside="showFilters = false" class="w-full h-fit rounded-md">
-                            <div class="py-10">
-                                <h3>Фильтры</h3>
+                        <div class="py-10">
+                            <h3>Фильтры</h3>
+                            <div class="flex flex-col lg:flex-row justify-between xl:justify-start">
                                 <div>
+                                    <!-- для кого -->
+                                    <div class="mt-4" x-data="{ selected: '' }">
+                                    <h4>Для кого</h4>
+                                    <div class="mt-2 flex items-center gap-2">
+                                        <div @click="selected = 'Мужчина'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Мужчина', 'bg-[#6D2025] text-[#A92727]': selected !== 'Мужчина' }">Мужчина</div>
+
+                                        <div @click="selected = 'Женщина'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Женщина', 'bg-[#6D2025] text-[#A92727]': selected !== 'Женщина' }">Женщина</div>
+
+                                        <div @click="selected = 'Ребенок'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Ребенок', 'bg-[#6D2025] text-[#A92727]': selected !== 'Ребенок' }">Ребенок</div>
+                                    </div>
+                                </div>
 
                                     <!-- сортировка -->
-                                    <div class="sm:hidden mt-4 relative inline-block text-left" x-data="{ open: false, selectedOption: 'Популярное' }">
+                                    <div class="lg:hidden mt-4 relative inline-block text-left" x-data="{ open: false, selectedOption: 'Популярное' }">
                                         <div>
-                                          <button @click="open = !open" type="button" class="inline-flex justify-between gap-16 items-center pl-6 pr-10 py-2 border border-gray-300 shadow-sm text-sm rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                            <button @click="open = !open" type="button" class="inline-flex justify-between gap-16 items-center pl-6 pr-10 py-2 border border-gray-300 shadow-sm text-sm rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300" id="options-menu" aria-haspopup="true" aria-expanded="true">
                                             <span>Сортировка</span>
                                             <span x-text="selectedOption" class="text-gray-400"></span>
-                                          </button>
+                                            </button>
                                         </div>
                                         
                                         <!-- выпадающее меню -->
                                         <div x-show="open" @click.away="open = false" class="origin-top-right absolute top-6 right-3 w-52 rounded-md shadow-lg bg-gray-100 ring-1 ring-black ring-opacity-5 divide-y divide-white" aria-labelledby="options-menu" role="menu">
-                                          <div class="py-1" role="none">
+                                            <div class="py-1" role="none">
                                             <!-- опции выпадающего списка -->
                                             <a href="#" @click="selectedOption = 'Популярное'; open = false;" class="block px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-white hover:text-gray-900 border-b border-gray-200" role="menuitem">Популярное</a>
                                             <a href="#" @click="selectedOption = 'Сначала дороже'; open = false;" class="block px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-white hover:text-gray-900 border-b border-gray-200" role="menuitem">Сначала дороже</a>
                                             <a href="#" @click="selectedOption = 'Сначала дешевле'; open = false;" class="block px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-white hover:text-gray-900 border-b border-gray-200" role="menuitem">Сначала дешевле</a>
-                                          </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -195,228 +266,261 @@
                                         <h4>Цена</h4>
                                     
                                         <div>
-                                          <label class="relative">
+                                            <label class="relative">
                                             <input x-model="priceRange[0]" type="text" class="mt-2 pl-11 pr-4 py-3 border border-gray-300 shadow-sm text-sm rounded-lg text-gray-700 ">
                                             <div class="absolute top-0 left-4 text-gray-700">от</div>
-                                          </label>
+                                            </label>
                                     
-                                          <label class="relative">
+                                            <label class="relative">
                                             <input x-model="priceRange[1]" type="text" class="mt-2 pl-11 pr-4 py-3 border border-gray-300 shadow-sm text-sm rounded-lg text-gray-700 ">
                                             <div class="absolute top-0 left-4 text-gray-700">до</div>
-                                          </label>
+                                            </label>
                                         </div>
                                     
                                         <div class="mt-4" x-ref="priceSlider"></div>
                                     </div> -->
 
-
-                                    <!-- распродажа (переключатель) -->
-                                    <div class="mt-4" x-data="{ switchOn: false }">
-                                          <button type="button" class="mt-2 inline-flex justify-between gap-16 items-center px-5 py-1 border border-gray-300 shadow-sm text-sm rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300" id="options-menu" aria-haspopup="true" aria-expanded="true">
-                                            <span>Распродажа</span>
-                                      
-                                            <label class="relative inline-block w-16 h-9 bg-gray-300 rounded-full p-1 cursor-pointer">
-                                                <input type="checkbox" x-model="switchOn" class="hidden">
-                                                <div :class="{ 'translate-x-[28px]': switchOn }" class="absolute top-1 left-1 w-7 h-7 bg-[#A92727] rounded-full transition-transform duration-300 ease-in-out transform">
-                                                    <!-- <span :class="{ 'text-white': switchOn, 'text-gray-700': !switchOn }" class="text-xs font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">ON</span> -->
-                                                </div>
-                                            </label>
-                                          </button>
-                                    </div>
-
                                     <!-- размер -->
-                                    <div class="mt-4" x-data="{ selectedSize: '' }">
+                                    <div class="mt-4" x-data="{ selected: '' }">
                                         <h4>Размер</h4>
                                         <div class="mt-2 flex items-center gap-2">
-                                            <div @click="selectedSize = 'S'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedSize === 'S', 'bg-[#6D2025] text-[#A92727]': selectedSize !== 'S' }">S</div>
+                                            <div @click="selected = 'S'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'S', 'bg-[#6D2025] text-[#A92727]': selected !== 'S' }">S</div>
 
-                                            <div @click="selectedSize = 'M'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedSize === 'M', 'bg-[#6D2025] text-[#A92727]': selectedSize !== 'M' }">M</div>
+                                            <div @click="selected = 'M'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'M', 'bg-[#6D2025] text-[#A92727]': selected !== 'M' }">M</div>
 
-                                            <div @click="selectedSize = 'L'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedSize === 'L', 'bg-[#6D2025] text-[#A92727]': selectedSize !== 'L' }">L</div>
+                                            <div @click="selected = 'L'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'L', 'bg-[#6D2025] text-[#A92727]': selected !== 'L' }">L</div>
 
-                                            <div @click="selectedSize = 'XL'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedSize === 'XL', 'bg-[#6D2025] text-[#A92727]': selectedSize !== 'XL' }">XL</div>
+                                            <div @click="selected = 'XL'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'XL', 'bg-[#6D2025] text-[#A92727]': selected !== 'XL' }">XL</div>
                                         </div>
                                     </div>
-                                      
+                                </div>
+
+                                <div class="lg:ml-10">
+                                    <!-- материал -->
+                                    <div class="mt-4" x-data="{ selected: '' }">
+                                        <h4>Материал</h4>
+                                        <div class="mt-2 flex items-center gap-2 overflow-x-scroll scrollable-container">
+                                            <div @click="selected = 'Хлопок'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Хлопок', 'bg-[#6D2025] text-[#A92727]': selected !== 'Хлопок' }">Хлопок</div>
+
+                                            <div @click="selected = 'Полиэстер'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Полиэстер', 'bg-[#6D2025] text-[#A92727]': selected !== 'Полиэстер' }">Полиэстер</div>
+
+                                            <div @click="selected = 'Трикотаж'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Трикотаж', 'bg-[#6D2025] text-[#A92727]': selected !== 'Трикотаж' }">Трикотаж</div>
+
+                                            <div @click="selected = 'Лён'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Лён', 'bg-[#6D2025] text-[#A92727]': selected !== 'Лён' }">Лён</div>
+                                        </div>
+                                    </div>
+
                                     <!-- цвет -->
-                                    <div class="mt-4" x-data="{ selectedColor: '' }">
+                                    <div class="mt-4" x-data="{ selected: '' }">
                                         <h4>Цвет</h4>
-                                        <div class="mt-2 flex items-center gap-2">
-                                            <div @click="selectedColor = 'Белый'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedColor === 'Белый', 'bg-[#6D2025] text-[#A92727]': selectedColor !== 'Белый' }">Белый</div>
+                                        <div class="mt-2 flex items-center gap-2 overflow-x-scroll scrollable-container">
+                                            <div @click="selected = 'Белый'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Белый', 'bg-[#6D2025] text-[#A92727]': selected !== 'Белый' }">Белый</div>
 
-                                            <div @click="selectedColor = 'Черный'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedColor === 'Черный', 'bg-[#6D2025] text-[#A92727]': selectedColor !== 'Черный' }">Черный</div>
+                                            <div @click="selected = 'Черный'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Черный', 'bg-[#6D2025] text-[#A92727]': selected !== 'Черный' }">Черный</div>
 
-                                            <div @click="selectedColor = 'Красный'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedColor === 'Красный', 'bg-[#6D2025] text-[#A92727]': selectedColor !== 'Красный' }">Красный</div>
+                                            <div @click="selected = 'Красный'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Красный', 'bg-[#6D2025] text-[#A92727]': selected !== 'Красный' }">Красный</div>
 
-                                            <div @click="selectedColor = 'Оранжевый'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selectedColor === 'Оранжевый', 'bg-[#6D2025] text-[#A92727]': selectedColor !== 'Оранжевый' }">Оранжевый</div>
+                                            <div @click="selected = 'Оранжевый'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Оранжевый', 'bg-[#6D2025] text-[#A92727]': selected !== 'Оранжевый' }">Оранжевый</div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <button class="mt-6 py-3 px-10 text-sm rounded-md uppercase bg-[#c13131] hover:bg-[#A92727] transition-colors hover:underline">Применить фильтры()</button>
+                                <div class="lg:ml-10">
+                                    <!-- для кого -->
+                                    <div class="mt-4" x-data="{ selected: '' }">
+                                        <h4>Сезон</h4>
+                                        <div class="mt-2 flex items-center gap-2 overflow-x-scroll scrollable-container">
+                                            <div @click="selected = 'Осень'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Осень', 'bg-[#6D2025] text-[#A92727]': selected !== 'Осень' }">Осень</div>
+
+                                            <div @click="selected = 'Зима'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Зима', 'bg-[#6D2025] text-[#A92727]': selected !== 'Зима' }">Зима</div>
+
+                                            <div @click="selected = 'Весна'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Весна', 'bg-[#6D2025] text-[#A92727]': selected !== 'Весна' }">Весна</div>
+
+                                            <div @click="selected = 'Лето'" class="px-4 py-2 rounded-3xl text-sm" :class="{ 'bg-[#A92727] text-white': selected === 'Лето', 'bg-[#6D2025] text-[#A92727]': selected !== 'Лето' }">Лето</div>
+                                        </div>
+
+                                        <!-- распродажа (переключатель) -->
+                                        <!-- <div class="mt-4" x-data="{ switchOn: false }">
+                                            <button type="button" class="mt-2 inline-flex justify-between gap-16 items-center px-5 py-1 border border-gray-300 shadow-sm text-sm rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                                <span>Распродажа</span>
+                                        
+                                                <label class="relative inline-block w-16 h-9 bg-gray-300 rounded-full p-1 cursor-pointer">
+                                                    <input type="checkbox" x-model="switchOn" class="hidden">
+                                                    <div :class="{ 'translate-x-[28px]': switchOn }" class="absolute top-1 left-1 w-7 h-7 bg-[#A92727] rounded-full transition-transform duration-300 ease-in-out transform">
+                                                        <span :class="{ 'text-white': switchOn, 'text-gray-700': !switchOn }" class="text-xs font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">ON</span>
+                                                    </div>
+                                                </label>
+                                            </button>
+                                        </div> -->
+                                    </div>
+
                                 </div>
                             </div>
+
+                            <button @click="showFilters = false" class="mt-6 py-3 px-10 text-sm rounded-md uppercase bg-[#c13131] hover:bg-[#A92727] transition-colors hover:underline">Применить фильтры()</button>
+                        </div>
                     </div>
                 </div>
         
                 <!-- товары -->
-                <div class="flex flex-wrap gap-10 justify-between underline-offset-[3px]">
-                    
+                <div class="lg:mt-10 flex flex-wrap gap-10 justify-center lg:justify-between underline-offset-[3px]">
+                
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                     <div class="flex flex-col items-center text-base font-normal">
-                        <div class="text-[8rem] font-bold flex items-center">
-                            {<div class="w-56 h-52">
-                                <img src="assets/img/t-shirt.png" alt="" class="w-56 h-52">    
+                        <div class="text-[5rem] lg:text-[7rem] font-bold flex items-center">
+                            {<div class="">
+                                <img src="assets/img/gif/t-shirt.gif" alt="" class="w-40 lg:w-56 h-40 lg:h-52">    
                             </div>}
                         </div>
-                        <div class="w-56 flex justify-end">
+                        <div class="w-40 lg:w-56 flex justify-end">
                             <a href="product.html" class="pt-4 hover:underline hover:text-[#F8F276]">
                                 купить()
                             </a>
                         </div>
                     </div>
-        
+    
                 </div>
         
                 <!-- пагинация -->
@@ -425,8 +529,8 @@
                         <div class="w-9 h-9 bg-[#9A5B5B] rounded text-black font-semibold flex items-center justify-center">
                             <img src="assets/img/vector1.svg" alt="">
                         </div>
-                        <div class="w-9 h-9 bg-white rounded text-[#A92727] font-semibold flex items-center justify-center border-2 border-[#A92727]">1</div>
-                        <a href=""><div class="w-9 h-9 bg-white rounded text-black font-semibold flex items-center justify-center border-2 border-[#DFE3E8] hover:text-gray-500">2</div></a>
+                        <div class="w-9 h-9 bg-white rounded text-[#A92727] font-semibold flex items-center justify-center border-2 border-[#A92727]">0</div>
+                        <a href=""><div class="w-9 h-9 bg-white rounded text-black font-semibold flex items-center justify-center border-2 border-[#DFE3E8] hover:text-gray-500">1</div></a>
                         <div class="w-9 h-9 bg-white rounded text-black font-semibold flex items-center justify-center border-2 border-[#DFE3E8]">...</div>
                         <a href=""><div class="w-9 h-9 bg-white rounded text-black font-semibold flex items-center justify-center border-2 border-[#DFE3E8] hover:text-gray-500">9</div></a>
                         <a href=""><div class="w-9 h-9 bg-white rounded text-black font-semibold flex items-center justify-center border-2 border-[#DFE3E8] hover:text-gray-500">10</div></a>
